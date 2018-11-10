@@ -16,13 +16,18 @@ namespace Lessson_6
         private static readonly string ResultFile = $@"{Path}\result.dat";
         static void Main( string[] args )
         {
-            //ClearResult( ResultFile, $@"{Path}\Files" );
-
-            CreateFilesAsync( FileNum, Path );
-            CalculateFilesAsync( Path, ResultFile );
+            RunFileCal();
 
             Console.WriteLine( "Done" );
             Console.ReadLine();
+        }
+
+        private static async void RunFileCal()
+        {
+            ClearResult( ResultFile, $@"{Path}\Files" );
+
+            await CreateFilesAsync( FileNum, Path );
+            await CalculateFilesAsync( Path, ResultFile );
         }
 
         private static void ClearResult( string resultFileDir, string fileDir )
@@ -34,7 +39,7 @@ namespace Lessson_6
             if ( dir.Exists ) dir.Delete( true );
         }
 
-        private static async void CreateFilesAsync( int fileNum, string path )
+        private static async Task CreateFilesAsync( int fileNum, string path )
         {
             var dir = new DirectoryInfo( path );
             var tasks = new Task[fileNum];
@@ -66,7 +71,7 @@ namespace Lessson_6
             file.Close();
         }
 
-        private static async void CalculateFilesAsync( string path, string resultFile )
+        private static async Task CalculateFilesAsync( string path, string resultFile )
         {
             var fileInfo = new DirectoryInfo( $@"{path}\Files" ).GetFiles();
             foreach ( var file in fileInfo )
